@@ -3,9 +3,13 @@
 namespace UserBundle\Document;
 
 use Doctrine\ODM\MongoDB\Mapping\Annotations as ODM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-/** @ODM\Document (collection="User") */
-class User
+/**
+ * @ODM\Document (collection="User")
+ * @ODM\HasLifecycleCallbacks()
+ */
+class User implements UserInterface
 {
     /**
      * @ODM\Id
@@ -217,4 +221,33 @@ class User
         $this->updated_at = $updated_at;
     }
 
+    /**
+     * @ODM\PrePersist
+     */
+    public function setCreatedValue()
+    {
+        $this->create_at = new \DateTime();
+    }
+
+    /**
+     * @ODM\prePersist
+     * @ODM\PreUpdate
+     */
+    public function setUpdatedValue()
+    {
+        $this->updated_at = new \DateTime();
+    }
+
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+    public function getRoles()
+    {
+        // TODO: Implement getRoles() method.
+    }
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
 }

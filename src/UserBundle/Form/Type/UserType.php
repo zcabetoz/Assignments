@@ -4,6 +4,7 @@ namespace UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserType extends AbstractType
 {
@@ -15,10 +16,18 @@ class UserType extends AbstractType
             ->add('last_name', 'text')
             ->add('email', 'email')
             ->add('password', 'password')
-            ->add('role', 'choice', array('choices'=>array('ROLE_ADMIN'=>'Administrator','ROLE_USER'=>'User'), 'placeholder'=>'Select one role'))
+            ->add('role', 'choice', array('choices' => array('ROLE_ADMIN' => 'Administrator', 'ROLE_USER' => 'User'), 'placeholder' => 'Select one role'))
             ->add('is_active', 'checkbox')
-            ->add('save', 'submit', array('label'=>'Save user'))
-        ;
+            ->add('save', 'submit', array('label' => 'Save user'));
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(
+            array(
+                'data_class'=>'UserBundle\Document\User'
+            )
+        );
     }
 
     public function getName()
